@@ -43,6 +43,7 @@ apply from: "gradle/asciidoc.gradle"
 repositories {
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
+    maven { url "https://repository.apache.org/content/repositories/snapshots"}
 }
 
 @dependencies.template(applicationType, project, features, gradleBuild)
