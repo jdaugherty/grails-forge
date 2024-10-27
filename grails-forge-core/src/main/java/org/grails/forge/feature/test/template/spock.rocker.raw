@@ -9,16 +9,15 @@ package @project.getPackageName()
 }
 
 import grails.gorm.transactions.Rollback
+import grails.plugin.geb.ContainerGebSpec
 import grails.testing.mixin.integration.Integration
-
-import geb.spock.*
 
 /**
  * See https://www.gebish.org/manual/current/ for more instructions
  */
 @@Integration
 @@Rollback
-class @project.getClassName()Spec extends GebSpec {
+class @project.getClassName()Spec extends ContainerGebSpec {
 
     void "test something"() {
         when:"The home page is visited"

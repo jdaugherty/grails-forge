@@ -30,38 +30,32 @@ import org.grails.forge.template.RockerTemplate;
 import org.grails.forge.template.RockerWritable;
 import org.grails.forge.feature.test.template.gebConfig;
 
-import java.util.Set;
 import java.util.stream.Stream;
 
 @Singleton
-public class Geb implements DefaultFeature {
+public class GebWithWebDriverBinaries implements Feature {
 
     private final Spock spock;
 
-    public Geb(Spock spock) {
+    public GebWithWebDriverBinaries(Spock spock) {
         this.spock = spock;
-    }
-
-    @Override
-    public boolean shouldApply(ApplicationType applicationType, Options options, Set<Feature> selectedFeatures) {
-        return applicationType == ApplicationType.WEB && options.getTestFramework() != TestFramework.JUNIT;
     }
 
     @NonNull
     @Override
     public String getName() {
-        return "geb";
+        return "geb-with-webdriver-binaries";
     }
 
     @Override
     public String getTitle() {
-        return "Geb Functional Testing for Grails";
+        return "Geb Functional Testing for Grails with WebDriver binaries Gradle plugin";
     }
 
     @NonNull
     @Override
     public String getDescription() {
-        return "This plugins configure Geb for Grails framework to write automation tests.";
+        return "This plugins configure Geb for Grails framework to write automation tests with WebDriver binaries Gradle plugin.";
     }
 
     @Override
@@ -99,11 +93,6 @@ public class Geb implements DefaultFeature {
                 .extension(new RockerWritable(webdriverBinariesPlugin.template(generatorContext.getProject(), generatorContext.getOperatingSystem())))
                         .version("3.2")
                 .build());
-
-        generatorContext.addDependency(Dependency.builder()
-                .groupId("org.grails.plugins")
-                .artifactId("geb")
-                .integrationTestImplementationTestFixtures());
 
         Stream.of("api", "support", "remote-driver")
                 .map(name -> "selenium-" + name)

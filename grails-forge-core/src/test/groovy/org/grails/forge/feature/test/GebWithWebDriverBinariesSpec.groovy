@@ -4,16 +4,15 @@ import org.grails.forge.ApplicationContextSpec
 import org.grails.forge.application.ApplicationType
 import org.grails.forge.application.OperatingSystem
 import org.grails.forge.fixture.CommandOutputFixture
-import org.grails.forge.options.JdkVersion
 import org.grails.forge.options.Options
 import org.grails.forge.options.TestFramework
 import spock.lang.Unroll
 
-class GebSpec extends ApplicationContextSpec implements CommandOutputFixture {
+class GebWithWebDriverBinariesSpec extends ApplicationContextSpec implements CommandOutputFixture {
 
     void "test dependencies"() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ['geb-with-webdriver-binaries'])
         final def buildGradle = output["build.gradle"]
 
         expect:
@@ -26,7 +25,7 @@ class GebSpec extends ApplicationContextSpec implements CommandOutputFixture {
 
     void "test GebConfig.groovy file is present"() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ['geb-with-webdriver-binaries'])
 
         expect:
         output.containsKey('src/integration-test/resources/GebConfig.groovy')
@@ -35,11 +34,11 @@ class GebSpec extends ApplicationContextSpec implements CommandOutputFixture {
     @Unroll
     void "test feature geb is not supported for #applicationType application"(ApplicationType applicationType) {
         when:
-        generate(applicationType, new Options(TestFramework.SPOCK), ["geb"])
+        generate(applicationType, new Options(TestFramework.SPOCK), ['geb-with-webdriver-binaries'])
 
         then:
         def e = thrown(IllegalArgumentException)
-        e.message == 'The requested feature does not exist: geb'
+        e.message == 'The requested feature does not exist: geb-with-webdriver-binaries'
 
         where:
         applicationType << [ApplicationType.PLUGIN, ApplicationType.REST_API]
@@ -47,7 +46,7 @@ class GebSpec extends ApplicationContextSpec implements CommandOutputFixture {
 
     void "test webdriver binaries gradle configurations"() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ['geb-with-webdriver-binaries'])
         final def buildGradle = output["build.gradle"]
         final def settingGradle = output["settings.gradle"]
 
@@ -62,7 +61,7 @@ class GebSpec extends ApplicationContextSpec implements CommandOutputFixture {
 
     void "test webdriver binaries gradle configurations for windows OS"() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, OperatingSystem.WINDOWS))
+        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, OperatingSystem.WINDOWS), ['geb-with-webdriver-binaries'])
         final def buildGradle = output["build.gradle"]
         final def settingGradle = output["settings.gradle"]
 

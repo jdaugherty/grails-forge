@@ -86,7 +86,7 @@ class FeatureControllerSpec extends Specification {
                         JdkVersion.DEFAULT_OPTION).features
 
         then:
-        !features.any { it.name == 'geb' }
+        !features.any { it.name == 'geb-with-testcontainers' }
         features.any { it.name == 'gorm-hibernate5' }
 
         when:
@@ -99,7 +99,7 @@ class FeatureControllerSpec extends Specification {
                         JdkVersion.DEFAULT_OPTION).features
 
         then:
-        features.any { it.name == 'geb' }
+        features.any { it.name == 'geb-with-testcontainers' }
     }
 
     void "test list features for application type"() {
@@ -113,7 +113,7 @@ class FeatureControllerSpec extends Specification {
                         JdkVersion.DEFAULT_OPTION).features
 
         then:
-        !features.any { it.name == 'geb' }
+        !features.any { it.name == 'geb-with-testcontainers' }
 
         when:
         features = client
