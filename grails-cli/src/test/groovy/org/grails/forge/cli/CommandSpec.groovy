@@ -47,7 +47,7 @@ class CommandSpec extends Specification {
     Process executeGradleCommand(String command) {
         StringBuilder gradleCommand = new StringBuilder()
         if (spock.util.environment.OperatingSystem.current.isWindows()) {
-            gradleCommand.append("gradlew.bat")
+            gradleCommand.append("cmd.exe /c gradlew")
         } else {
             gradleCommand.append("./gradlew")
         }
