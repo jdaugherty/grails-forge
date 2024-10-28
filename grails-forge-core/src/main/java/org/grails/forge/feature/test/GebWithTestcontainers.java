@@ -96,13 +96,16 @@ public class GebWithTestcontainers implements DefaultFeature {
                 .artifactId("geb")
                 .integrationTestImplementationTestFixtures());
 
-        TestFramework testFramework = generatorContext.getTestFramework();
-        String integrationTestSourcePath = generatorContext.getIntegrationTestSourcePath("/{packagePath}/{className}");
         Project project = generatorContext.getProject();
-        TestRockerModelProvider provider = new DefaultTestRockerModelProvider(org.grails.forge.feature.test.template.spock.template(project),
-                groovyJunit.template(project));
+        TestRockerModelProvider provider = new DefaultTestRockerModelProvider(
+                org.grails.forge.feature.test.template.spock.template(project),
+                groovyJunit.template(project)
+        );
         generatorContext.addTemplate("applicationTest",
-                new RockerTemplate(integrationTestSourcePath, provider.findModel(Language.DEFAULT_OPTION, testFramework))
+                new RockerTemplate(
+                        generatorContext.getIntegrationTestSourcePath("/{packagePath}/{className}"),
+                        provider.findModel(Language.DEFAULT_OPTION, generatorContext.getTestFramework())
+                )
         );
     }
 }

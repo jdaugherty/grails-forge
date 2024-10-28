@@ -90,8 +90,15 @@ public class GebWithWebDriverBinaries implements Feature {
         generatorContext.addBuildPlugin(GradlePlugin.builder()
                 .id("com.github.erdi.webdriver-binaries")
                 .lookupArtifactId("webdriver-binaries-gradle-plugin")
-                .extension(new RockerWritable(webdriverBinariesPlugin.template(generatorContext.getProject(), generatorContext.getOperatingSystem())))
-                        .version("3.2")
+                .extension(
+                        new RockerWritable(
+                                webdriverBinariesPlugin.template(
+                                        generatorContext.getProject(),
+                                        generatorContext.getOperatingSystem()
+                                )
+                        )
+                )
+                .version("3.2")
                 .build());
 
         Stream.of("api", "support", "remote-driver")
@@ -99,26 +106,38 @@ public class GebWithWebDriverBinaries implements Feature {
                 .forEach(name -> generatorContext.addDependency(Dependency.builder()
                         .groupId("org.seleniumhq.selenium")
                         .artifactId(name)
-                        .test()));
+                        .test()
+                ));
 
-        generatorContext.addDependency(Dependency.builder()
-                .groupId("org.seleniumhq.selenium")
-                .artifactId("selenium-firefox-driver")
-                .testRuntime());
-        generatorContext.addDependency(Dependency.builder()
-                .groupId("org.seleniumhq.selenium")
-                .artifactId("selenium-safari-driver")
-                .testRuntime());
+        generatorContext.addDependency(
+                Dependency.builder()
+                        .groupId("org.seleniumhq.selenium")
+                        .artifactId("selenium-firefox-driver")
+                        .testRuntime()
+        );
+        generatorContext.addDependency(
+                Dependency.builder()
+                        .groupId("org.seleniumhq.selenium")
+                        .artifactId("selenium-safari-driver")
+                        .testRuntime()
+        );
 
-        TestFramework testFramework = generatorContext.getTestFramework();
-        String integrationTestSourcePath = generatorContext.getIntegrationTestSourcePath("/{packagePath}/{className}");
         Project project = generatorContext.getProject();
-        TestRockerModelProvider provider = new DefaultTestRockerModelProvider(org.grails.forge.feature.test.template.spock.template(project),
-                groovyJunit.template(project));
+        TestRockerModelProvider provider = new DefaultTestRockerModelProvider(
+                org.grails.forge.feature.test.template.spock.template(project),
+                groovyJunit.template(project)
+        );
         generatorContext.addTemplate("applicationTest",
-                new RockerTemplate(integrationTestSourcePath, provider.findModel(Language.DEFAULT_OPTION, testFramework))
+                new RockerTemplate(
+                        generatorContext.getIntegrationTestSourcePath("/{packagePath}/{className}"),
+                        provider.findModel(Language.DEFAULT_OPTION, generatorContext.getTestFramework())
+                )
         );
         generatorContext.addTemplate("gebConfig",
-                new RockerTemplate("src/integration-test/resources/GebConfig.groovy", gebConfig.template(project)));
+                new RockerTemplate(
+                        "src/integration-test/resources/GebConfig.groovy",
+                        gebConfig.template(project)
+                )
+        );
     }
 }

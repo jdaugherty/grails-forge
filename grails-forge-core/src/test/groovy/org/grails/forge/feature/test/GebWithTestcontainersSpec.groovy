@@ -9,17 +9,17 @@ import spock.lang.Unroll
 
 class GebWithTestcontainersSpec extends ApplicationContextSpec implements CommandOutputFixture {
 
-    void "test dependencies"() {
+    void 'test dependencies'() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
-        final def buildGradle = output["build.gradle"]
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        def buildGradle = output['build.gradle']
 
         expect:
-        buildGradle.contains("integrationTestImplementation testFixtures(\"org.grails.plugins:geb\")")
+        buildGradle.contains('integrationTestImplementation testFixtures("org.grails.plugins:geb")')
     }
 
     @Unroll
-    void "test feature geb-with-testcontainers is not supported for #applicationType application"(ApplicationType applicationType) {
+    void 'test feature geb-with-testcontainers is not supported for #applicationType application'(ApplicationType applicationType) {
         when:
         generate(applicationType, new Options(TestFramework.SPOCK), ['geb-with-testcontainers'])
 

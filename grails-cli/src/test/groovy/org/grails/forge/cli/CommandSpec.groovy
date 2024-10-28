@@ -17,6 +17,7 @@ package org.grails.forge.cli
 
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
+import spock.util.environment.OperatingSystem
 
 import java.nio.file.Files
 
@@ -33,25 +34,25 @@ class CommandSpec extends Specification {
     }
 
     void setup() {
-        previousUsrDir = System.getProperty("user.dir")
-        System.setProperty("user.dir", dir.absolutePath)
+        previousUsrDir = System.getProperty('user.dir')
+        System.setProperty('user.dir', dir.absolutePath)
         output = new StringBuilder()
     }
 
     void cleanup() {
-        System.setProperty("user.dir", previousUsrDir)
+        System.setProperty('user.dir', previousUsrDir)
         dir.deleteDir()
         killProcess()
     }
 
     Process executeGradleCommand(String command) {
         StringBuilder gradleCommand = new StringBuilder()
-        if (spock.util.environment.OperatingSystem.current.isWindows()) {
-            gradleCommand.append("cmd.exe /c gradlew")
+        if (OperatingSystem.current.isWindows()) {
+            gradleCommand.append('cmd.exe /c gradlew')
         } else {
-            gradleCommand.append("./gradlew")
+            gradleCommand.append('./gradlew')
         }
-        gradleCommand.append(" --no-daemon ").append(command)
+        gradleCommand.append(' --no-daemon ').append(command)
         executeCommand(gradleCommand)
     }
 
@@ -66,9 +67,9 @@ class CommandSpec extends Specification {
     }
 
     private Process executeCommand(StringBuilder builder) {
-        String[] args = builder.toString().split(" ")
+        String[] args = builder.toString().split(' ')
         ProcessBuilder pb = new ProcessBuilder(args)
-        pb.environment().put("JAVA_HOME", System.getenv("JAVA_HOME") ?: System.getProperty("java.home"))
+        pb.environment().put('JAVA_HOME', System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
         process = pb.directory(dir).start()
         process.consumeProcessOutputStream(output)
         process
@@ -79,7 +80,7 @@ class CommandSpec extends Specification {
             process.destroy()
             try {
                 process.waitForOrKill(1000)
-            } catch(e) {
+            } catch(ignored) {
                 process.destroyForcibly()
             }
         }

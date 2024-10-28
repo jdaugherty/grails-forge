@@ -14,7 +14,7 @@ class FeatureControllerSpec extends Specification {
     @Inject
     ApplicationTypeClient client
 
-    void "test list features"() {
+    void 'test list features'() {
         when:
         List<FeatureDTO> features = client
                 .features(ApplicationType.DEFAULT_OPTION,
@@ -28,7 +28,7 @@ class FeatureControllerSpec extends Specification {
         !features.isEmpty()
     }
 
-    void "test community features"() {
+    void 'test community features'() {
         when:
         List<FeatureDTO> communityFeatures = client
                 .features(ApplicationType.DEFAULT_OPTION,
@@ -43,7 +43,7 @@ class FeatureControllerSpec extends Specification {
         communityFeatures.isEmpty()
     }
 
-    void "test list features - spanish"() {
+    void 'test list features - spanish'() {
         when:
         List<FeatureDTO> features = client
                 .spanishFeatures(ApplicationType.DEFAULT_OPTION,
@@ -59,7 +59,7 @@ class FeatureControllerSpec extends Specification {
         !mongoGorm.isCommunity()
     }
 
-    void "test list default features - spanish"() {
+    void 'test list default features - spanish'() {
         when:
         List<FeatureDTO> features = client
                 .spanishDefaultFeatures(ApplicationType.DEFAULT_OPTION,
@@ -75,7 +75,7 @@ class FeatureControllerSpec extends Specification {
         !assetPipeline.isCommunity()
     }
 
-    void "test list default features for application type"() {
+    void 'test list default features for application type'() {
         when:
         def features = client
                 .defaultFeatures(ApplicationType.PLUGIN,
@@ -102,7 +102,7 @@ class FeatureControllerSpec extends Specification {
         features.any { it.name == 'geb-with-testcontainers' }
     }
 
-    void "test list features for application type"() {
+    void 'test list features for application type'() {
         when:
         def features = client
                 .features(ApplicationType.PLUGIN,
@@ -128,7 +128,7 @@ class FeatureControllerSpec extends Specification {
         features.any { it.name == 'gorm-mongodb' }
     }
 
-    void "test list features for application type should NOT return default included features"() {
+    void 'test list features for application type should NOT return default included features'() {
         when:
         def features = client
                 .features(ApplicationType.WEB,
