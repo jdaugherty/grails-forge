@@ -31,7 +31,7 @@ class GrailsGspSpec extends ApplicationContextSpec implements CommandOutputFixtu
 
         then:
         template.contains("apply plugin: \"org.grails.grails-web\"")
-        template.contains("id \"org.grails.grails-gsp\"")
+        template.contains("apply plugin: \"org.grails.grails-gsp\"")
         template.contains("implementation \"org.grails.plugins:gsp\"")
     }
 
