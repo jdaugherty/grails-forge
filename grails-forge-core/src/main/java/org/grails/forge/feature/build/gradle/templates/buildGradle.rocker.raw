@@ -85,7 +85,7 @@ configurations {
 
 @if (features.mainClass().isPresent()) {
 application {
-    mainClass.set("@features.mainClass().get()")
+    mainClass = "@features.mainClass().get()"
 }
 
 }
