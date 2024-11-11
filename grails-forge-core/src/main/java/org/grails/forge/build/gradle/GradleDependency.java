@@ -99,12 +99,11 @@ public class GradleDependency extends DependencyCoordinate {
 
     @NonNull
     public String toSnippet() {
-        String snippet = gradleConfiguration.getConfigurationName();
+        String snippet = gradleConfiguration.getConfigurationName() + " ";
         if (isPom()) {
-            String platformPrefix = " ";
-            snippet += platformPrefix + "platform (";
+            snippet += "platform(";
         }
-        snippet += " \"" + getGroupId() + ':' + getArtifactId() +
+        snippet += "\"" + getGroupId() + ':' + getArtifactId() +
                 (getVersion() != null ? (':' + getVersion()) : "") + "\"";
         if (isPom()) {
             snippet += ")";
