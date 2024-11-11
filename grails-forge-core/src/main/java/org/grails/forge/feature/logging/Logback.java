@@ -67,7 +67,7 @@ public class Logback implements LoggingFeature, DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-logging")
-                .compile());
+                .implementation());
     }
 
     @Override

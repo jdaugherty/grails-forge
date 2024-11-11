@@ -26,7 +26,7 @@ public class Scope {
 
     public static final Scope ANNOTATION_PROCESSOR = new Scope(Source.MAIN, Collections.singletonList(Phase.ANNOTATION_PROCESSING));
     public static final Scope BUILD = new Scope(Source.BUILD_SRC, Arrays.asList(Phase.BUILD));
-    public static final Scope COMPILE = new Scope(Source.MAIN, Arrays.asList(Phase.COMPILATION, Phase.RUNTIME));
+    public static final Scope IMPLEMENTATION = new Scope(Source.MAIN, Arrays.asList(Phase.COMPILATION, Phase.RUNTIME));
     public static final Scope COMPILE_ONLY = new Scope(Source.MAIN, Collections.singletonList(Phase.COMPILATION));
     public static final Scope CONSOLE = new Scope(Source.MAIN, Collections.singletonList(Phase.CONSOLE));
     public static final Scope DEVELOPMENT_ONLY = new Scope(Source.MAIN, Collections.singletonList(Phase.DEVELOPMENT_ONLY));

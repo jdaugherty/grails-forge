@@ -99,7 +99,7 @@ public class GrailsGsp implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("gsp")
-                .compile());
+                .implementation());
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("mainLayout", new URLTemplate(getViewFolderPath() + "layouts/main.gsp", classLoader.getResource("gsp/main.gsp")));

@@ -53,7 +53,7 @@ public class Neo4jGorm extends GormOneOfFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("neo4j")
-                .compile());
+                .implementation());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.neo4j.test")

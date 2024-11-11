@@ -13,13 +13,13 @@ class GradleDependencyComparatorSpec extends Specification {
             getTestFramework() >> TestFramework.JUNIT
         }
         List<GradleDependency> dependencies =
-                [dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-validation").compile(), ctx),
-                 dep(Dependency.builder().groupId("io.swagger.core.v3").artifactId("swagger-annotations").compile(), ctx),
-                 dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-runtime").compile(), ctx),
-                 dep(Dependency.builder().groupId("jakarta.annotation").artifactId("jakarta.annotation-api").compile(), ctx),
-                 dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-http-client").compile(), ctx),
+                [dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-validation").implementation(), ctx),
+                 dep(Dependency.builder().groupId("io.swagger.core.v3").artifactId("swagger-annotations").implementation(), ctx),
+                 dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-runtime").implementation(), ctx),
+                 dep(Dependency.builder().groupId("jakarta.annotation").artifactId("jakarta.annotation-api").implementation(), ctx),
+                 dep(Dependency.builder().groupId("io.micronaut").artifactId("micronaut-http-client").implementation(), ctx),
                  dep(Dependency.builder().groupId("io.micronaut.openapi").artifactId("micronaut-openapi").annotationProcessor(), ctx),
-                 dep(Dependency.builder().groupId("io.micronaut.sql").artifactId("micronaut-jdbc-hikari").compile(), ctx),
+                 dep(Dependency.builder().groupId("io.micronaut.sql").artifactId("micronaut-jdbc-hikari").implementation(), ctx),
                  dep(Dependency.builder().groupId("org.grails").artifactId("grails-console").console(), ctx),
                  dep(Dependency.builder().groupId("org.testcontainers").artifactId("testcontainers").testImplementation(), ctx),
                  dep(Dependency.builder().groupId("mysql").artifactId("mysql-connector-java").runtimeOnly(), ctx),

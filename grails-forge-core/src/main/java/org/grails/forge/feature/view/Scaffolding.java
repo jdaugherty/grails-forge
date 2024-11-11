@@ -87,6 +87,6 @@ public class Scaffolding implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("scaffolding")
-                .compile());
+                .implementation());
     }
 }

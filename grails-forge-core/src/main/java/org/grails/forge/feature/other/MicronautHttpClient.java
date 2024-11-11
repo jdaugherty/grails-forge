@@ -62,7 +62,7 @@ public class MicronautHttpClient implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("io.micronaut")
                 .artifactId("micronaut-http-client")
-                .compile());
+                .implementation());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("io.micronaut")

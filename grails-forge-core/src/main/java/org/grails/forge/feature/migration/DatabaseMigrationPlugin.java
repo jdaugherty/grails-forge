@@ -59,7 +59,7 @@ public class DatabaseMigrationPlugin implements MigrationFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("database-migration")
-                .compile());
+                .implementation());
     }
 
     private String getSrcDirPath() {

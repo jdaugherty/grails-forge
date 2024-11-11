@@ -183,8 +183,8 @@ public final class Dependency {
             return scope(Scope.BUILD);
         }
 
-        public Builder compile() {
-            return scope(Scope.COMPILE);
+        public Builder implementation() {
+            return scope(Scope.IMPLEMENTATION);
         }
 
         public Builder console() {

@@ -81,7 +81,7 @@ public class ViewMarkup extends GrailsViews implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("views-markup")
-                .compile());
+                .implementation());
 
         generatorContext.addTemplate("application_index_gml", new RockerTemplate(getViewFolderPath() + "application/index.gml", index.template()));
         generatorContext.addTemplate("_errors_gml", new RockerTemplate(getViewFolderPath() + "errors/_errors.gml", _errors.template()));
