@@ -119,6 +119,19 @@ public final class Dependency {
                 coordinate.isPom());
     }
 
+    public Dependency scope(Scope newScope) {
+        return new Dependency(
+                newScope,
+                groupId,
+                artifactId,
+                version,
+                versionProperty,
+                requiresLookup,
+                annotationProcessorPriority,
+                order,
+                pom);
+    }
+
     public boolean isAnnotationProcessorPriority() {
         return annotationProcessorPriority;
     }
@@ -166,7 +179,7 @@ public final class Dependency {
             }
         }
 
-        public Builder buildscript() {
+        public Builder buildSrc() {
             return scope(Scope.BUILD);
         }
 
@@ -205,6 +218,10 @@ public final class Dependency {
 
         public Builder profile() {
             return scope(Scope.PROFILE);
+        }
+
+        public Builder classpath() {
+            return scope(Scope.CLASSPATH);
         }
 
         public Builder annotationProcessor(boolean requiresPriority) {

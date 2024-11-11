@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,13 +60,11 @@ public class AssetPipeline implements DefaultFeature {
 
     @Override
     public void apply(GeneratorContext generatorContext) {
-        generatorContext.addBuildscriptDependency(Dependency.builder()
-                .groupId("com.bertramlabs.plugins")
-                .lookupArtifactId("asset-pipeline-gradle")
-                .buildscript());
+
         generatorContext.addBuildPlugin(GradlePlugin.builder()
                 .id("com.bertramlabs.asset-pipeline")
                 .extension(new RockerWritable(assetPipelineExtension.template(generatorContext.getApplicationType())))
+                .lookupArtifactId("asset-pipeline-gradle")
                 .build());
 
         generatorContext.addDependency(Dependency.builder()

@@ -9,6 +9,7 @@
 @import org.grails.forge.feature.Features
 @import org.grails.forge.options.TestFramework
 @import org.grails.forge.util.VersionInfo
+@import org.grails.forge.build.gradle.GradleDependency
 
 @args (
 ApplicationType applicationType,
@@ -18,16 +19,44 @@ Features features,
 GradleBuild gradleBuild
 )
 
-@seleniumVersion => { @coordinateResolver.apply("selenium-api").getVersion() }
+@seleniumVersion => {@coordinateResolver.apply("selenium-api").getVersion()}
+
+
+@if (!features.contains("gradle-build-src") && !gradleBuild.getBuildscriptDependencies().isEmpty()) {
+buildscript {
+    repositories {
+        maven { url "https://repo.grails.org/grails/core" }
+        mavenCentral()
+    }
+    dependencies { // Not Published to Gradle Plugin Portal
+    @for (GradleDependency dependency : gradleBuild.getBuildscriptDependencies()) {
+        @dependency.toSnippet()
+    }
+    }
+}
+
+}
 
 @for (String importLine : gradleBuild.getPluginsImports()) {
 @(importLine)
 }
 plugins {
-@for (GradlePlugin gradlePlugin : gradleBuild.getPlugins()) {
+@for (GradlePlugin gradlePlugin : gradleBuild.getPluginsWithoutApply()) {
+    @if(gradlePlugin.getVersion() != null) {
+    id "@gradlePlugin.getId()" version "@gradlePlugin.getVersion()"
+    } else {
     id "@gradlePlugin.getId()"
+    }
 }
 }
+
+@if(!gradleBuild.getPluginsWithApply().isEmpty()) {
+// Not Published to Gradle Plugin Portal
+@for (GradlePlugin gradlePlugin : gradleBuild.getPluginsWithApply()) {
+apply plugin: "@gradlePlugin.getId()"
+}
+}
+
 
 group = "@project.getPackageName()"
 

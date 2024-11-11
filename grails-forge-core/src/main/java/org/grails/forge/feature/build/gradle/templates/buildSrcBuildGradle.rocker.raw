@@ -11,13 +11,13 @@ Features features,
 GradleBuild gradleBuild
 )
 
-@if(!gradleBuild.getBuildscriptDependencies().isEmpty()) {
+@if(!gradleBuild.getBuildSrcDependencies().isEmpty()) {
 repositories {
-    mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
+    mavenCentral()
 }
 dependencies {
-@for (GradleDependency dependency : gradleBuild.getBuildscriptDependencies()) {
+@for (GradleDependency dependency : gradleBuild.getBuildSrcDependencies()) {
     @dependency.toSnippet()
 }
 }
