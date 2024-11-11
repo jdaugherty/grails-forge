@@ -2,7 +2,6 @@ package org.grails.forge.feature.grailsProfiles
 
 import org.grails.forge.ApplicationContextSpec
 import org.grails.forge.application.ApplicationType
-import org.grails.forge.application.generator.GeneratorContext
 import org.grails.forge.fixture.CommandOutputFixture
 import org.grails.forge.options.JdkVersion
 import org.grails.forge.options.Options
@@ -19,7 +18,7 @@ class GrailsProfilesSpec extends ApplicationContextSpec implements CommandOutput
         then:
         output.containsKey("build.gradle")
         def build = output.get("build.gradle")
-        build.contains("profile(\"org.grails.profiles:${applicationType.name.replace("_", "-")}\")")
+        build.contains("profile \"org.grails.profiles:${applicationType.name.replace("_", "-")}\"")
 
         where:
         applicationType << ApplicationType.values().toList()
