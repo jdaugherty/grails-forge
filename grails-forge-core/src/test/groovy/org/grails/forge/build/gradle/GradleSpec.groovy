@@ -40,4 +40,33 @@ class GradleSpec extends ApplicationContextSpec implements CommandOutputFixture 
         expect:
         settingsGradle.contains("rootProject.name")
     }
+
+    void "test buildSrc/build.gradle"() {
+        given:
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, JdkVersion.JDK_11), ["gradle-build-src"])
+        String buildSrcGradle = output["buildSrc/build.gradle"]
+
+        expect:
+        buildSrcGradle
+        buildSrcGradle.contains('repositories')
+        buildSrcGradle.contains('dependencies')
+    }
+
+    void "no settings.gradle file is created without the 'gradle-settings-file' feature"() {
+        given:
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, JdkVersion.JDK_11))
+        String settingsGradle = output["settings.gradle"]
+
+        expect:
+        !settingsGradle
+    }
+
+    void "no buildSrc/build.gradle file is created without the 'gradle-build-src' feature"() {
+        given:
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, JdkVersion.JDK_11))
+        String buildSrcGradle = output["buildSrc/settings.gradle"]
+
+        expect:
+        !buildSrcGradle
+    }
 }
