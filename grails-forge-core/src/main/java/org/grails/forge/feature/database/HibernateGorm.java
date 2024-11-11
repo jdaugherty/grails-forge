@@ -90,7 +90,7 @@ public class HibernateGorm extends GormFeature implements DatabaseDriverConfigur
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.apache.tomcat")
                 .artifactId("tomcat-jdbc")
-                .runtime());
+                .runtimeOnly());
     }
 
     @Override

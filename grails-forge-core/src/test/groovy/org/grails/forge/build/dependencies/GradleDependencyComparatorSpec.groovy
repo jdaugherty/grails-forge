@@ -2,7 +2,6 @@ package org.grails.forge.build.dependencies
 
 import org.grails.forge.application.generator.GeneratorContext
 import org.grails.forge.build.gradle.GradleDependency
-import org.grails.forge.options.Language
 import org.grails.forge.options.TestFramework
 import spock.lang.Specification
 
@@ -22,11 +21,11 @@ class GradleDependencyComparatorSpec extends Specification {
                  dep(Dependency.builder().groupId("io.micronaut.openapi").artifactId("micronaut-openapi").annotationProcessor(), ctx),
                  dep(Dependency.builder().groupId("io.micronaut.sql").artifactId("micronaut-jdbc-hikari").compile(), ctx),
                  dep(Dependency.builder().groupId("org.grails").artifactId("grails-console").console(), ctx),
-                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("testcontainers").test(), ctx),
-                 dep(Dependency.builder().groupId("mysql").artifactId("mysql-connector-java").runtime(), ctx),
-                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("junit-jupiter").test(), ctx),
-                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("mysql").test(), ctx),
-                 dep(Dependency.builder().groupId("ch.qos.logback").artifactId("logback-classic").runtime(), ctx)]
+                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("testcontainers").testImplementation(), ctx),
+                 dep(Dependency.builder().groupId("mysql").artifactId("mysql-connector-java").runtimeOnly(), ctx),
+                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("junit-jupiter").testImplementation(), ctx),
+                 dep(Dependency.builder().groupId("org.testcontainers").artifactId("mysql").testImplementation(), ctx),
+                 dep(Dependency.builder().groupId("ch.qos.logback").artifactId("logback-classic").runtimeOnly(), ctx)]
 
         when:
         dependencies.sort(GradleDependency.COMPARATOR)

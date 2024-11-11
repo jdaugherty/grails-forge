@@ -103,27 +103,27 @@ public class Geb implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("geb")
-                .test());
+                .testImplementation());
 
         Stream.of("api", "support", "remote-driver")
                 .map(name -> "selenium-" + name)
                 .forEach(name -> generatorContext.addDependency(Dependency.builder()
                         .groupId("org.seleniumhq.selenium")
                         .lookupArtifactId(name)
-                        .test()));
+                        .testImplementation()));
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.seleniumhq.selenium")
                 .lookupArtifactId("selenium-chrome-driver")
-                .testRuntime());
+                .testRuntimeOnly());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.seleniumhq.selenium")
                 .lookupArtifactId("selenium-firefox-driver")
-                .testRuntime());
+                .testRuntimeOnly());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.seleniumhq.selenium")
                 .lookupArtifactId("selenium-safari-driver")
-                .testRuntime());
+                .testRuntimeOnly());
 
         TestFramework testFramework = generatorContext.getTestFramework();
         String integrationTestSourcePath = generatorContext.getIntegrationTestSourcePath("/{packagePath}/{className}");

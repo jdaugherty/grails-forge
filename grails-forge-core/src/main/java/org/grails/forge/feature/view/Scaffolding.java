@@ -82,7 +82,7 @@ public class Scaffolding implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.fusesource.jansi")
                 .lookupArtifactId("jansi")
-                .runtime());
+                .runtimeOnly());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")

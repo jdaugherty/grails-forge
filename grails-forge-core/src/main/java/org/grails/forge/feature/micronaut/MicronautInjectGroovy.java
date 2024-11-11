@@ -51,6 +51,6 @@ public class MicronautInjectGroovy implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("io.micronaut")
                 .artifactId("micronaut-inject-groovy")
-                .test());
+                .testImplementation());
     }
 }

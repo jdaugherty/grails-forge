@@ -195,12 +195,12 @@ public final class Dependency {
             return scope(Scope.COMPILE_ONLY);
         }
 
-        public Builder runtime() {
-            return scope(Scope.RUNTIME);
+        public Builder runtimeOnly() {
+            return scope(Scope.RUNTIME_ONLY);
         }
 
-        public Builder test() {
-            return scope(Scope.TEST);
+        public Builder testImplementation() {
+            return scope(Scope.TEST_IMPLEMENTATION);
         }
 
         @SuppressWarnings("unused")
@@ -208,8 +208,8 @@ public final class Dependency {
             return scope(Scope.TEST_COMPILE_ONLY);
         }
 
-        public Builder testRuntime() {
-            return scope(Scope.TEST_RUNTIME);
+        public Builder testRuntimeOnly() {
+            return scope(Scope.TEST_RUNTIME_ONLY);
         }
 
         public Builder annotationProcessor() {

@@ -30,11 +30,11 @@ public class Scope {
     public static final Scope COMPILE_ONLY = new Scope(Source.MAIN, Collections.singletonList(Phase.COMPILATION));
     public static final Scope CONSOLE = new Scope(Source.MAIN, Collections.singletonList(Phase.CONSOLE));
     public static final Scope DEVELOPMENT_ONLY = new Scope(Source.MAIN, Collections.singletonList(Phase.DEVELOPMENT_ONLY));
-    public static final Scope RUNTIME = new Scope(Source.MAIN, Collections.singletonList(Phase.RUNTIME));
-    public static final Scope TEST = new Scope(Source.TEST, Arrays.asList(Phase.COMPILATION, Phase.RUNTIME));
+    public static final Scope RUNTIME_ONLY = new Scope(Source.MAIN, Collections.singletonList(Phase.RUNTIME));
+    public static final Scope TEST_IMPLEMENTATION = new Scope(Source.TEST, Arrays.asList(Phase.COMPILATION, Phase.RUNTIME));
     public static final Scope TEST_ANNOTATION_PROCESSOR = new Scope(Source.TEST, Collections.singletonList(Phase.ANNOTATION_PROCESSING));
     public static final Scope TEST_COMPILE_ONLY = new Scope(Source.TEST, Collections.singletonList(Phase.COMPILATION));
-    public static final Scope TEST_RUNTIME = new Scope(Source.TEST, Collections.singletonList(Phase.RUNTIME));
+    public static final Scope TEST_RUNTIME_ONLY = new Scope(Source.TEST, Collections.singletonList(Phase.RUNTIME));
     public static final Scope OPENREWRITE = new Scope(Source.MAIN, Collections.singletonList(Phase.OPENREWRITE));
     public static final Scope PROFILE = new Scope(Source.MAIN, Collections.singletonList(Phase.PROFILE));
     public static final Scope CLASSPATH = new Scope(Source.BUILDSCRIPT, Collections.singletonList(Phase.BUILD));

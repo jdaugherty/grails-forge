@@ -70,7 +70,7 @@ public class AssetPipeline implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("com.bertramlabs.plugins")
                 .lookupArtifactId("asset-pipeline-grails")
-                .runtime());
+                .runtimeOnly());
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("advancedgrails_svg", new URLTemplate("grails-app/assets/images/advancedgrails.svg", classLoader.getResource("assets/images/advancedgrails.svg")));

@@ -94,7 +94,7 @@ public class ViewJson extends GrailsViews implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("views-json-testing-support")
-                .test());
+                .testImplementation());
 
         generatorContext.addTemplate("application_index_gson", new RockerTemplate(getViewFolderPath() + "application/index.gson", index.template()));
         generatorContext.addTemplate("_errors_gson", new RockerTemplate(getViewFolderPath() + "errors/_errors.gson", _errors.template()));
