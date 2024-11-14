@@ -3,6 +3,7 @@
 @import org.grails.forge.feature.Features
 @import org.grails.forge.build.gradle.GradleBuild
 @import org.grails.forge.build.gradle.GradleDependency
+@import org.grails.forge.util.VersionInfo
 
 @args (
 ApplicationType applicationType,
@@ -17,6 +18,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    implementation platform("org.grails:grails-bom:@VersionInfo.getGrailsVersion()")
 @for (GradleDependency dependency : gradleBuild.getBuildSrcDependencies()) {
     @dependency.toSnippet()
 }
