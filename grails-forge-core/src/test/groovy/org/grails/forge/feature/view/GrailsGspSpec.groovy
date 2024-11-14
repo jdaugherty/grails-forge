@@ -30,9 +30,9 @@ class GrailsGspSpec extends ApplicationContextSpec implements CommandOutputFixtu
             .render()
 
         then:
-        template.contains("id \"org.grails.grails-web\"")
-        template.contains("id \"org.grails.grails-gsp\"")
-        template.contains("implementation(\"org.grails.plugins:gsp\")")
+        template.contains("apply plugin: \"org.grails.grails-web\"")
+        template.contains("apply plugin: \"org.grails.grails-gsp\"")
+        template.contains("implementation \"org.grails.plugins:gsp\"")
     }
 
     void "test gsp configuration"() {
@@ -87,9 +87,9 @@ class GrailsGspSpec extends ApplicationContextSpec implements CommandOutputFixtu
         final String build = output['build.gradle']
 
         then:
-        build.contains('id "org.grails.grails-web"')
-        build.contains('id "org.grails.grails-gsp"')
-        build.contains("implementation(\"org.grails.plugins:gsp\")")
+        build.contains('apply plugin: "org.grails.grails-web"')
+        build.contains('apply plugin: "org.grails.grails-gsp"')
+        build.contains("implementation \"org.grails.plugins:gsp\"")
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.WEB_PLUGIN]
@@ -103,7 +103,7 @@ class GrailsGspSpec extends ApplicationContextSpec implements CommandOutputFixtu
 
         then:
         !build.contains('id "org.grails.grails-gsp"')
-        !build.contains("implementation(\"org.grails.plugins:gsp\")")
+        !build.contains("implementation \"org.grails.plugins:gsp\"")
 
         where:
         applicationType << [ApplicationType.PLUGIN, ApplicationType.REST_API]

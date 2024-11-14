@@ -3,6 +3,7 @@
 @import org.grails.forge.feature.Features
 @import org.grails.forge.build.gradle.GradleBuild
 @import org.grails.forge.build.gradle.GradleDependency
+@import org.grails.forge.util.VersionInfo
 
 @args (
 ApplicationType applicationType,
@@ -11,13 +12,14 @@ Features features,
 GradleBuild gradleBuild
 )
 
-@if(!gradleBuild.getBuildscriptDependencies().isEmpty()) {
+@if(!gradleBuild.getBuildSrcDependencies().isEmpty()) {
 repositories {
-    mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
+    mavenCentral()
 }
 dependencies {
-@for (GradleDependency dependency : gradleBuild.getBuildscriptDependencies()) {
+    implementation platform("org.grails:grails-bom:@VersionInfo.getGrailsVersion()")
+@for (GradleDependency dependency : gradleBuild.getBuildSrcDependencies()) {
     @dependency.toSnippet()
 }
 }

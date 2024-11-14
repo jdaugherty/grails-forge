@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,13 +99,12 @@ public class GradleDependency extends DependencyCoordinate {
 
     @NonNull
     public String toSnippet() {
-        String snippet = gradleConfiguration.getConfigurationName();
+        String snippet = gradleConfiguration.getConfigurationName() + " ";
         if (isPom()) {
-            String platformPrefix = " ";
-            snippet += platformPrefix + "platform";
+            snippet += "platform(";
         }
-        snippet += "(\"" + getGroupId() + ':' + getArtifactId() +
-                (getVersion() != null ? (':' + getVersion()) : "") + "\")";
+        snippet += "\"" + getGroupId() + ':' + getArtifactId() +
+                (getVersion() != null ? (':' + getVersion()) : "") + "\"";
         if (isPom()) {
             snippet += ")";
         }

@@ -28,7 +28,7 @@ class GrailsApplicationSpec extends BeanContextSpec implements CommandOutputFixt
         def buildGradle = output['build.gradle']
 
         then:
-        buildGradle.contains('mainClass.set("example.grails.Application")')
+        buildGradle.contains('mainClass = "example.grails.Application"')
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.REST_API]
