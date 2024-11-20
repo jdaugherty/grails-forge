@@ -51,6 +51,7 @@ jobs:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: "📤 Publish to Sonatype OSSRH"
+        if: false # Temporary disable to prevent failure when re-running with the same version
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
