@@ -311,6 +311,7 @@ jobs:
           asset_name: grails-darwin-amd64-${{ github.event.release.tag_name }}.zip
           asset_content_type: application/zip
   macos-arm:
+    if: false # Graalvm cannot build Java 11 OS X Arm Native Image
     name: "Release OS X Arm Native CLI"
     runs-on: macos-latest
     env:
@@ -409,7 +410,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build, linux, macos, macos-arm, windows]
+    needs: [build, linux, macos, windows] # macos-arm is disabled
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
