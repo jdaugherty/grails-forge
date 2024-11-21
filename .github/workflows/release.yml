@@ -51,7 +51,6 @@ jobs:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: "📤 Publish to Sonatype OSSRH"
-        if: false # Temporary disable to prevent failure when re-running with the same version
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -76,7 +75,6 @@ jobs:
           asset_name: grails-cli-${{ steps.release_version.outputs.value }}.zip
           asset_content_type: application/zip
       - name: "📤 Publish to Github Pages"
-        if: false # Temp disable for re-release
         uses: micronaut-projects/github-pages-deploy-action@master
         env:
           BETA: ${{ contains(steps.release_version.outputs.value, 'M') }}
