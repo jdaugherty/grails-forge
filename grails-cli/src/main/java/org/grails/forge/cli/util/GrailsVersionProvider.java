@@ -16,6 +16,7 @@
 package org.grails.forge.cli.util;
 
 import jakarta.inject.Singleton;
+import org.grails.forge.options.JdkVersion;
 import org.grails.forge.util.VersionInfo;
 import picocli.CommandLine.IVersionProvider;
 
@@ -45,6 +46,7 @@ public class GrailsVersionProvider implements IVersionProvider {
     public String[] getVersion() {
         return new String[] {
                 "Grails Version: " + VersionInfo.getGrailsVersion(),
+                "Grails Java Version: " + JdkVersion.DEFAULT_OPTION.majorVersion(),
                 "JVM Version: " + System.getProperty("java.version")
         };
     }

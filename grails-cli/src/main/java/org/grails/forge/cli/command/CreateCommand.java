@@ -127,7 +127,7 @@ public abstract class CreateCommand extends BaseCommand implements Callable<Inte
 
     private JdkVersion getJdkVersion() {
         if (javaVersion == null) {
-            return VersionInfo.getJavaVersion();
+            return JdkVersion.DEFAULT_OPTION;
         } else {
             return JdkVersion.valueOf(javaVersion);
         }

@@ -20,8 +20,8 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'liberica'
+          java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
       - name: "🔢 Set the current release version"
@@ -127,8 +127,8 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'liberica'
+          java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
       - name: "✅ Run Tests"
@@ -185,8 +185,8 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'liberica'
+          java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
       - name: "✅ Run Tests"
@@ -235,10 +235,10 @@ jobs:
       - name: "☕️ Setup GraalVM CE"
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '11'
+          java-version: '17'
+          distribution: 'graalvm-community'
           native-image-musl: 'true'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -280,9 +280,9 @@ jobs:
       - name: "☕️ Setup GraalVM CE"
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '11'
+          java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -311,7 +311,6 @@ jobs:
           asset_name: grails-darwin-amd64-${{ github.event.release.tag_name }}.zip
           asset_content_type: application/zip
   macos-arm:
-    if: false # Graalvm cannot build Java 11 OS X Arm Native Image
     name: "Release OS X Arm Native CLI"
     runs-on: macos-latest
     env:
@@ -325,9 +324,9 @@ jobs:
       - name: "☕️ Setup GraalVM CE"
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '11'
+          java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -369,9 +368,9 @@ jobs:
       - name: "☕️ Setup GraalVM CE"
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '11'
+          java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -410,7 +409,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build, linux, macos, windows] # macos-arm is disabled
+    needs: [build, linux, macos, macos-arm, windows]
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -419,8 +418,8 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'liberica'
+          java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
       - name: "🚀 Grails SDK Minor Release"
