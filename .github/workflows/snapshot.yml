@@ -157,7 +157,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'graalvm-community'
-          native-image-musl: 'true'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
