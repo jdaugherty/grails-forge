@@ -1,11 +1,9 @@
 name: Snapshot
 on:
-  push:
-    branches:
-      - '[6-9]+.[0-9]+.x'
-  pull_request:
-    branches:
-      - '[6-9]+.[0-9]+.x'
+  # Snapshots should only be published automatically from the latest branch
+  # as it updates the snapshot version on https://start.grails.org.
+  # However, if you need, you can still run this workflow manually for this branch on:
+  # https://github.com/grails/grails-forge/actions/workflows/snapshot.yml
   workflow_dispatch:
 jobs:
   build:
