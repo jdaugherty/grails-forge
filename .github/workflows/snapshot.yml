@@ -43,6 +43,8 @@ jobs:
         id: publish
         if: success() && github.event_name == 'push' && matrix.java == '11'
         env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: ./gradlew publishToSonatype
@@ -70,7 +72,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'liberica'
-          java-version: '11'
+          java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
         with:
