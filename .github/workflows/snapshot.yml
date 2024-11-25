@@ -16,7 +16,7 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'liberica'
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -61,7 +61,7 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'liberica'
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -117,7 +117,7 @@ jobs:
       - name: "☕️ Setup JDK"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'liberica'
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -156,8 +156,9 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
+          distribution: 'graalvm-community'
+          native-image-musl: 'true'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -192,8 +193,8 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -230,8 +231,8 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
@@ -266,8 +267,8 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
+          distribution: 'graalvm-community'
           components: 'native-image'
-          version: '22.3.3'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4

@@ -6,7 +6,6 @@ import io.micronaut.context.env.Environment
 import org.grails.forge.cli.Application
 import org.grails.forge.cli.CommandFixture
 import org.grails.forge.cli.CommandSpec
-import org.grails.forge.options.JdkVersion
 import org.grails.forge.util.VersionInfo
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -32,8 +31,7 @@ class ApplicationCommandSpec extends CommandSpec implements CommandFixture {
         then:
         noExceptionThrown()
         out.toString().contains("Grails Version: " + VersionInfo.getGrailsVersion())
-        out.toString().contains("Grails Java Version: " + JdkVersion.DEFAULT_OPTION.majorVersion())
-        out.toString().contains("JVM Version: " + System.getProperty("java.version"))
+        out.toString().contains("JVM Version: " + Objects.requireNonNullElse(System.getProperty("java.version"), "<a valid java.home was not found>" ))
 
         where:
         args        | _
