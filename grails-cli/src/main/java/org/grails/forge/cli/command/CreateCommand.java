@@ -27,7 +27,6 @@ import org.grails.forge.io.FileSystemOutputHandler;
 import org.grails.forge.io.OutputHandler;
 import org.grails.forge.options.*;
 import org.grails.forge.util.NameUtils;
-import org.grails.forge.util.VersionInfo;
 import picocli.CommandLine;
 
 import java.util.Collections;

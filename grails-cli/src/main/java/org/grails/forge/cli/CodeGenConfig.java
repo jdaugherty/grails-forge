@@ -29,7 +29,6 @@ import org.grails.forge.options.JdkVersion;
 import org.grails.forge.options.Language;
 import org.grails.forge.options.Options;
 import org.grails.forge.options.TestFramework;
-import org.grails.forge.util.VersionInfo;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
