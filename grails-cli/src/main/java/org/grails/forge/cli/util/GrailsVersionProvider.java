@@ -19,6 +19,8 @@ import jakarta.inject.Singleton;
 import org.grails.forge.util.VersionInfo;
 import picocli.CommandLine.IVersionProvider;
 
+import java.util.Objects;
+
 /**
  * Generates version information. Example usage:
  * <pre>
@@ -44,7 +46,8 @@ public class GrailsVersionProvider implements IVersionProvider {
 
     public String[] getVersion() {
         return new String[] {
-                "Grails Version: " + VersionInfo.getGrailsVersion()
+                "Grails Version: " + VersionInfo.getGrailsVersion(),
+                "JVM Version: " + Objects.requireNonNullElse(System.getProperty("java.version"), "<a valid java.home was not found>")
         };
     }
 }
