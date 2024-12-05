@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.convert.value.ConvertibleValuesMap;
 import org.grails.forge.application.OperatingSystem;
-import org.grails.forge.util.VersionInfo;
 
 import java.util.*;
 
@@ -81,11 +80,11 @@ public class Options implements ConvertibleValues<Object> {
     }
 
     public Options(TestFramework testFramework) {
-        this(testFramework, GormImpl.DEFAULT_OPTION, ServletImpl.DEFAULT_OPTION, VersionInfo.getJavaVersion(), OperatingSystem.DEFAULT, Collections.emptyMap());
+        this(testFramework, GormImpl.DEFAULT_OPTION, ServletImpl.DEFAULT_OPTION, JdkVersion.DEFAULT_OPTION, OperatingSystem.DEFAULT, Collections.emptyMap());
     }
 
     public Options() {
-        this(TestFramework.DEFAULT_OPTION, GormImpl.DEFAULT_OPTION, ServletImpl.DEFAULT_OPTION, VersionInfo.getJavaVersion(), OperatingSystem.DEFAULT, Collections.emptyMap());
+        this(TestFramework.DEFAULT_OPTION, GormImpl.DEFAULT_OPTION, ServletImpl.DEFAULT_OPTION, JdkVersion.DEFAULT_OPTION, OperatingSystem.DEFAULT, Collections.emptyMap());
     }
 
     public OperatingSystem getOperatingSystem() {
