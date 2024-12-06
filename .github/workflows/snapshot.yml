@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    name: "Build Project"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['11', '17']
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -17,14 +21,17 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'liberica'
-          java-version: '17'
+          java-version: ${{ matrix.java }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "🔨 Run Build"
         id: build
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-        run: ./gradlew build --refresh-dependencies
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
+        run: ./gradlew build
       - name: "✅ Verify CLI"
         if: success()
         run: |
@@ -34,17 +41,20 @@ jobs:
           ./tmp/cli/bin/grails --version
       - name: "📤 Publish to Sonatype OSSRH"
         id: publish
-        if: steps.build.outcome == 'success' && github.event_name == 'push'
+        if: success() && github.event_name == 'push' && matrix.java == '11'
         env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
         run: ./gradlew publishToSonatype
   deploy:
+    # Snapshots should only be deployed from the latest release branch
+    # as it updates the snapshot version on https://start.grails.org.
+    if: false # github.event_name != 'pull_request'
     name: "Deploy To Google Cloud Run"
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
-    needs: [build]
+    needs: build
     env:
       IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:snapshot
     steps:
@@ -65,9 +75,12 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "✅ Run Tests"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-api:test
@@ -75,14 +88,16 @@ jobs:
       - name: "🔨 Build Docker image"
         # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-web-netty:dockerBuildNative
           -PdockerImageName=${{ env.IMAGE_NAME }}
       - name: "📤 Push image to Google Cloud Container Registry"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-web-netty:dockerPushNative
@@ -97,10 +112,12 @@ jobs:
           --allow-unauthenticated
           --service-account=${{ secrets.GCLOUD_EMAIL }}
   deployAnalytics:
+    # Snapshots should only be deployed from the latest release branch
+    # as it updates the snapshot version on https://start.grails.org.
+    if: false # github.event_name != 'pull_request'
     name: "Deploy Analytics To Google Cloud Run"
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
-    needs: [build]
+    needs: build
     env:
       IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:snapshot
     steps:
@@ -121,21 +138,26 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "✅ Run Tests"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-forge-analytics-postgres:test
       - name: "🔨 Build Docker image"
         # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-analytics-postgres:dockerBuildNative
           -PdockerImageName=${{ env.IMAGE_NAME }}
       - name: "📤 Push image to Google Cloud Container Registry"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-analytics-postgres:dockerPushNative
@@ -144,11 +166,10 @@ jobs:
         run: |
           gcloud components install beta --quiet
           gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-analytics-snapshot --image $IMAGE_NAME --region us-central1 --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}
-
   linux:
     name: "Build Linux Native CLI"
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout the repository"
         uses: actions/checkout@v4
@@ -161,7 +182,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
@@ -175,7 +201,7 @@ jobs:
           mv ./grails-cli/build/native/nativeCompile/grails grails-linux-amd64-snapshot/bin
           cp ./LICENSE grails-linux-amd64-snapshot/
           zip -r grails-linux-amd64-snapshot.zip ./grails-linux-amd64-snapshot
-      - name: Upload Snapshot
+      - name: "📤 Upload Artifact to Workflow Summary Page"
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/6.2.x'
         uses: actions/upload-artifact@v4
         with:
@@ -184,7 +210,7 @@ jobs:
   macos:
     name: "Build OS X Intel Native CLI"
     runs-on: macos-13
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout the repository"
         uses: actions/checkout@v4
@@ -197,7 +223,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
@@ -211,7 +242,7 @@ jobs:
           mv ./grails-cli/build/native/nativeCompile/grails grails-darwin-amd64-snapshot/bin
           cp ./LICENSE grails-darwin-amd64-snapshot/
           zip -r grails-darwin-amd64-snapshot.zip ./grails-darwin-amd64-snapshot -x '*.DS_Store*' -x '__MAC_OSX'
-      - name: "📤 Upload Snapshot"
+      - name: "📤 Upload Artifact to Workflow Summary Page"
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/6.2.x'
         uses: actions/upload-artifact@v4
         with:
@@ -220,8 +251,6 @@ jobs:
   macos-arm:
     name: "Build OS X Arm Native CLI"
     runs-on: macos-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
     needs: [build]
     steps:
       - name: "📥 Checkout repository"
@@ -235,7 +264,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
@@ -249,7 +283,7 @@ jobs:
           mv ./grails-cli/build/native/nativeCompile/grails grails-darwin-aarch64-snapshot/bin
           cp ./LICENSE grails-darwin-aarch64-snapshot/
           zip -r grails-darwin-aarch64-snapshot.zip grails-darwin-aarch64-snapshot/ -x '*.DS_Store*' -x '__MAC_OSX'
-      - name: "📤 Upload Snapshot"
+      - name: "📤 Upload Artifact to Workflow Summary Page"
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/6.2.x'
         uses: actions/upload-artifact@v4
         with:
@@ -258,7 +292,7 @@ jobs:
   windows:
     name: "Build Windows Native CLI"
     runs-on: windows-latest
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout the repository"
         uses: actions/checkout@v4
@@ -271,7 +305,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build (Powershell)"
         shell: powershell
@@ -291,7 +330,7 @@ jobs:
           Move-Item -Path ./grails-cli/build/native/nativeCompile/grails.exe -Destination "./grails-win-amd64-snapshot/bin"
           Copy-Item "./LICENSE" -Destination "./grails-win-amd64-snapshot"
           Compress-Archive -Path "./grails-win-amd64-snapshot" -Update -DestinationPath ./grails-win-amd64-snapshot.zip
-      - name: "📤 Publish artifact"
+      - name: "📤 Upload Artifact to Workflow Summary Page"
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/6.2.x'
         uses: actions/upload-artifact@v4
         with:
