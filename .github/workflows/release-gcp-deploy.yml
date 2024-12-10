@@ -1,6 +1,10 @@
 name: "Release GCP Deploy"
 on:
   workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release version'
+        required: true
 jobs:
   build:
     name: "Build Project"
@@ -8,7 +12,7 @@ jobs:
     permissions:
       contents: write
     outputs:
-      release_version: ${{ steps.release_version.outputs.value }}
+      release_version: ${{ github.event.inputs.release }}
     env:
       GIT_USER_NAME: 'grails-build'
       GIT_USER_EMAIL: 'grails-build@users.noreply.github.com'
