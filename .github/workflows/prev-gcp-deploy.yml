@@ -1,4 +1,4 @@
-name: "Prev"
+name: "Prev GCP Deploy"
 on:
   workflow_dispatch:
 jobs:
