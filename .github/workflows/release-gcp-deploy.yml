@@ -67,8 +67,7 @@ jobs:
           ./gradlew
           grails-forge-api:test
           grails-forge-web-netty:test
-      - name: "🔨 Build Docker image"
-        # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
+      - name: "🔨 Build Docker Native Image"
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:${{ needs.build.outputs.release_version }}
           DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
@@ -127,8 +126,7 @@ jobs:
         run: >
           ./gradlew
           grails-forge-analytics-postgres:test
-      - name: "🔨 Build Docker image"
-        # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
+      - name: "🔨 Build Docker Native Image"
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:${{ needs.build.outputs.release_version }}
           DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
